@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { connectToDatabase } from "../client.js";
+import { connectToDatabase } from "../../client.js";
 import { Customer } from "../q2/index.js";
 
 async function Q17() {

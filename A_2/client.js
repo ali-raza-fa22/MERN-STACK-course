@@ -5,7 +5,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // MongoDB connection configuration
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/as_2";
+const MONGODB_URI =
+  process.env.MONGODB_URI || "mongodb://localhost:27017/bookstoreDB";
 
 // Create connection function
 export async function connectToDatabase() {

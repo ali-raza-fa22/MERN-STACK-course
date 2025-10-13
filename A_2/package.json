@@ -2,10 +2,10 @@
   "name": "a-2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": " client.js",
   "type": "module",
   "scripts": {
-    "dev": "node index.js"
+    "dev": "node  client.js"
   },
   "keywords": [],
   "author": "",

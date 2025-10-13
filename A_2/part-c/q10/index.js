@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { connectToDatabase } from "../client.js";
+import { connectToDatabase } from "../../client.js";
 import { Order } from "../q3/index.js";
 // Import Customer model to register it with Mongoose for population
 import { Customer } from "../q2/index.js";

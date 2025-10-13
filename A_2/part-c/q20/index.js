@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { connectToDatabase } from "../client.js";
+import { connectToDatabase } from "../../client.js";
 import { Order } from "../q3/index.js";
 import { Book } from "../q1/index.js";
 import { Customer } from "../q2/index.js";
