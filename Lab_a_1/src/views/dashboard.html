@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f4f4f4;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .header h1 {
+        margin: 0;
+      }
+      .header a {
+        padding: 10px 20px;
+        background: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      .header a:hover {
+        background: #0056b3;
+      }
+      .add-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .add-btn:hover {
+        background: #218838;
+      }
+      .posts {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+      }
+      .post {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .post img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+      }
+      .post h3 {
+        margin-top: 0;
+      }
+      .post p {
+        color: #666;
+      }
+      .post .author {
+        font-weight: bold;
+        color: #333;
+      }
+      .loading {
+        text-align: center;
+        padding: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Dashboard</h1>
+      <a href="/profile">Profile</a>
+    </div>
+    <div id="posts" class="posts">
+      <div class="loading">Loading posts...</div>
+    </div>
+    <button class="add-btn" onclick="window.location.href='/add-post'">
+      +
+    </button>
+
+    <script>
+      const token = localStorage.getItem("token");
+      if (!token) {
+        window.location.href = "/login";
+      }
+
+      async function loadPosts() {
+        try {
+          const response = await fetch("/posts");
+          const result = await response.json();
+          if (response.ok) {
+            const postsHtml = result.posts
+              .map(
+                (post) => `
+                        <div class="post">
+                            ${
+                              post.image
+                                ? `<img src="${post.image}" alt="Post image">`
+                                : ""
+                            }
+                            <h3>${post.title}</h3>
+                            <p>${post.content}</p>
+                            <p class="author">By ${post.user.username}</p>
+                            <p>${new Date(
+                              post.createdAt
+                            ).toLocaleDateString()}</p>
+                        </div>
+                    `
+              )
+              .join("");
+            document.getElementById("posts").innerHTML =
+              postsHtml || "<p>No posts yet.</p>";
+          } else {
+            document.getElementById("posts").innerHTML =
+              "<p>Error loading posts.</p>";
+          }
+        } catch (err) {
+          document.getElementById("posts").innerHTML =
+            "<p>Error: " + err.message + "</p>";
+        }
+      }
+
+      loadPosts();
+    </script>
+  </body>
+</html>
