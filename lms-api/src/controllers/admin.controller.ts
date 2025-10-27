@@ -9,32 +9,20 @@ export const listUsers = async (
 ) => {
   try {
     const current = (req as any).user;
-    const targetId = req.params.id;
-    if (!targetId) return res.status(400).json({ message: "Missing user id" });
+    if (!current) return res.status(401).json({ message: "Not authenticated" });
 
-    // Admin routes shouldn't allow operating on themselves per policy
-    if (current && targetId === current.id)
-      return res
-        .status(400)
-        .json({
-          message: "Admins cannot view their own account via this admin route",
-        });
-
-    const user = await User.findById(targetId)
+    const users = await User.find({ _id: { $ne: current.id } })
       .select("_id name email role")
+      .lean()
       .exec();
-    if (!user) return res.status(404).json({ message: "User not found" });
 
-    return res
-      .status(200)
-      .json({
-        user: {
-          id: String(user._id),
-          name: user.name,
-          email: user.email,
-          role: (user as any).role,
-        },
-      });
+    const payload = users.map((u) => ({
+      id: String(u._id),
+      name: u.name,
+      email: u.email,
+      role: (u as any).role,
+    }));
+    return res.status(200).json({ users: payload });
   } catch (err) {
     next(err);
   }
@@ -48,17 +36,11 @@ export const viewUser = async (
   const targetId = req.params.id;
   if (!targetId) return res.status(400).json({ message: "Missing user id" });
 
-  const user = await User.findById(targetId).exec();
-  if (!user) return res.status(404).json({ message: "User not found" });
+  const user = await User.findById(targetId)
+    .select("_id email name role")
+    .exec();
 
-  return res.status(200).json({
-    user: {
-      id: String(user._id),
-      name: user.name,
-      email: user.email,
-      role: (user as any).role,
-    },
-  });
+  return res.status(200).json({ user });
 };
 
 // Update a user's name (admin only). Cannot update self.

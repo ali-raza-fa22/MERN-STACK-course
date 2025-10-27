@@ -23,7 +23,13 @@ dont edit package.json
 create separate files for functions that can be reused across multiple files
 
 use morgan for request logging middleware
-use validation for incoming request bodies in the routes in middleware functions and return all errors in list
+
+use `auth.middleware.ts` to check requireAuth for authentication check and requireRole for admin routes
+use UserRole = "user" | "admin";
+
+dont return unnecessary and sensitive user info like password hashes in api responses
+
+use validation for incoming request bodies in the routes in middleware functions and return all errors in an array
 
 ---
 
