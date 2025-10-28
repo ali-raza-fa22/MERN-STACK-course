@@ -50,7 +50,6 @@ Each Lesson can include video, image, description, and metadata (e.g., duration,
 `{
   title: String,
   description: String,
-  instructor: ObjectId (User),
   thumbnail: String,
   category: String,
   chapters: [ObjectId (Chapter)],
@@ -60,9 +59,8 @@ Each Lesson can include video, image, description, and metadata (e.g., duration,
 chapter:
 `{
   title: String,
-  course: ObjectId (Course),
+  courseId: ObjectId (Course),
   lessons: [ObjectId (Lesson)],
-  order: Number
 }
 `
 
@@ -73,10 +71,7 @@ title: String,
 description: String,
 videoLink: String,
 imageLink: String,
-resources: [String],
-duration: Number,
-chapter: ObjectId (Chapter),
-order: Number
+chapterId: ObjectId (Chapter),
 }
 
 `

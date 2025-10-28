@@ -1,11 +1,14 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
 import authRoutes from "./routes/auth.routes";
 import adminRoutes from "./routes/admin.routes";
+import coursesRoutes from "./routes/courses.routes";
+import chaptersRoutes from "./routes/chapters.routes";
+import lessonsRoutes from "./routes/lessons.routes";
 import morgan from "morgan";
 import { errorHandler } from "./middleware/error.middleware";
+import { connectToDatabase } from "./utils/connectToDatabase";
 
 dotenv.config();
 
@@ -19,12 +22,10 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/lms-api";
 
 async function start() {
   try {
-    await mongoose.connect(MONGO_URI);
-    console.log("Connected to MongoDB");
+    await connectToDatabase();
 
     app.use(morgan(":method :url :status - :response-time ms"));
 
@@ -32,6 +33,9 @@ async function start() {
     app.use("/api/auth", authRoutes);
     // admin routes mounted separately
     app.use("/api/admin", adminRoutes);
+    app.use("/api/courses", coursesRoutes);
+    app.use("/api/chapters", chaptersRoutes);
+    app.use("/api/lessons", lessonsRoutes);
 
     // Error handler (should be after routes)
     app.use(errorHandler);
