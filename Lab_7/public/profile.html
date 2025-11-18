@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Welcome to Your Profile</h1>
+    <h2>Your Profile</h2>
+    <pre id="response">Loading profile…</pre>
+
+    <button id="logoutBtn">Logout</button>
+
+    <script>
+      const responseBox = document.getElementById("response");
+
+      async function fetchProfile() {
+        try {
+          const res = await fetch("/auth/profile", {
+            credentials: "include",
+            method: "GET",
+            headers: { Accept: "application/json" },
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            responseBox.textContent = JSON.stringify(data, null, 2);
+          } else if (res.status === 401) {
+            responseBox.textContent = "Not authenticated. Please log in.";
+          } else {
+            const err = await res.json().catch(() => ({}));
+            responseBox.textContent = err.message || "Failed to load profile.";
+          }
+        } catch (err) {
+          console.error("Profile fetch error:", err);
+          responseBox.textContent = "Error fetching profile.";
+        }
+      }
+
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", async () => {
+          try {
+            const res = await fetch("/auth/logout", {
+              credentials: "include",
+              method: "GET",
+            });
+
+            if (res.ok) {
+              // Redirect to index.html after logout
+              window.location.href = "/index.html";
+            } else {
+              responseBox.textContent = "Error logging out. Please try again.";
+            }
+          } catch (err) {
+            console.error("Logout error:", err);
+            responseBox.textContent = "Logout failed. Please try again.";
+          }
+        });
+
+      // fetch profile on load
+      fetchProfile();
+    </script>
+  </body>
+</html>
