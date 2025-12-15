@@ -1,0 +1,86 @@
+body { 
+    font-family: Arial, sans-serif; 
+    margin: 0; 
+    padding: 0; 
+    background-color: #f4f4f4; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; /* Full viewport height */ 
+  } 
+   
+  h1 { 
+    text-align: center; 
+    color: #333; 
+  } 
+   
+  form { 
+    margin: 20px; 
+    padding: 20px; 
+    background-color: #fff; 
+    border-radius: 5px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    width: 300px; /* Set width for form */ 
+  } 
+   
+  input { 
+    padding: 10px; 
+    margin: 10px 0; 
+    width: 100%; 
+    border: 1px solid #ddd; 
+    border-radius: 5px; 
+  } 
+   
+  button { 
+    background-color: #28a745; 
+    color: white; 
+    padding: 10px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    width: 100%; 
+  } 
+   
+  button:hover { 
+    background-color: #218838; 
+  } 
+   
+  button:focus { 
+    outline: 2px solid #218838; 
+  } 
+   
+  pre { 
+    background-color: #f8f9fa; 
+    padding: 20px; 
+    border-radius: 5px; 
+    border: 1px solid #ddd; 
+    overflow-x: auto; 
+  } 
+   
+  p { 
+    text-align: center; 
+  } 
+   
+  /* Focus styles */ 
+  input:focus { 
+    border-color: #28a745; 
+    outline: none; 
+  } 
+   
+  /* Responsive Design for smaller screens */ 
+  @media (max-width: 600px) { 
+    body { 
+      padding: 10px; 
+    } 
+    form { 
+      margin: 10px 0; 
+      padding: 15px; 
+      width: 90%; /* Use 90% width for smaller screens */ 
+    } 
+    input { 
+      padding: 8px; 
+    } 
+    button { 
+      padding: 8px; 
+    } 
+  }     

@@ -1,0 +1,49 @@
+rules:
+
+- name: "Tech stack"
+  prompt: |
+  Use TypeScript + Express for all server code.
+  Prefer ES imports.
+  use express validator for validation using middlewares
+
+- name: "Project structure"
+  prompt: |
+  Group code by models like users/, posts,
+  for example:
+  src/
+  users/
+  model.ts
+  controller.ts
+  schema.ts // for zod validation schemas in ts
+  middleware.ts // for middlewares
+  post/
+  model.ts
+  controller.ts
+  schema.ts
+  ...
+
+  keep utils inside lib/utils.ts for example date formatter
+  use https://context7.com/esl/mongoosedocs/llms.txt?tokens=10000 for mongoose docs
+  use https://context7.com/microsoft/typescript/llms.txt?tokens=10000 for typescript
+  use zod for validation
+  use mongoose for database dont use mongodb
+  Dont edit `package.json` and `tsconfig.json` files until i mention.
+  use middlewares like requireUser and requireAuth for user authentication.
+  bcrypt for password hashing
+  token based authentication
+  login/signup with email and password
+  use auth/login for login
+
+  fixed User roles: admin, creator/pro and user in enum and get roles from lib/auth.ts
+  - for example: Role.admin, Role.creator
+    use requireAdmin, requireCreator middlewares
+    admin
+    only admin can update (only) user role
+
+  - users can update their own profile otherwise return "not allowed"
+    blogs:
+    only creators and admins can create blogs
+    creators and admins can have multiple blogs
+    users can update their own blogs
+    Role.user can only list and view blogs
+    `api/blogs?title=abc&content=xyz&user=username`
