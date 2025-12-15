@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import mongoose from "mongoose";
 import { Role } from "../lib/auth.js";
 import {
   requireAuth,
@@ -21,7 +22,30 @@ router.get(
   requireUser,
   async (req: Request, res: Response) => {
     try {
-      const { title, content, user } = req.query;
+      const { title, content, user, search } = req.query;
+
+      if (typeof search === "string" && search.trim()) {
+        const searchQuery = search.trim();
+        const searchRegex = { $regex: searchQuery, $options: "i" };
+
+        const userIds = await UserModel.find({
+          $or: [{ name: searchRegex }, { email: searchRegex }],
+        })
+          .select("_id")
+          .lean();
+
+        const blogs = await BlogModel.find({
+          $or: [
+            { title: searchRegex },
+            { content: searchRegex },
+            { author: { $in: userIds.map((u) => u._id) } },
+          ],
+        })
+          .populate("author", "name email")
+          .lean();
+
+        return res.json(blogs);
+      }
 
       const filters: Record<string, unknown> = {};
       if (typeof title === "string" && title.trim()) {
@@ -32,18 +56,23 @@ router.get(
       }
 
       if (typeof user === "string" && user.trim()) {
-        const regex = new RegExp(user.trim(), "i");
-        const matchedUsers = await UserModel.find({
-          $or: [{ name: regex }, { email: regex }],
-        })
-          .select("_id")
-          .lean();
+        const userQuery = user.trim();
+        if (mongoose.Types.ObjectId.isValid(userQuery)) {
+          filters.author = userQuery;
+        } else {
+          const regex = new RegExp(userQuery, "i");
+          const matchedUsers = await UserModel.find({
+            $or: [{ name: regex }, { email: regex }],
+          })
+            .select("_id")
+            .lean();
 
-        const userIds = matchedUsers.map((u) => u._id);
-        if (userIds.length === 0) {
-          return res.json([]); // no matching authors
+          const userIds = matchedUsers.map((u) => u._id);
+          if (userIds.length === 0) {
+            return res.json([]); // no matching authors
+          }
+          filters.author = { $in: userIds };
         }
-        filters.author = { $in: userIds };
       }
 
       const blogs = await BlogModel.find(filters)

@@ -1,0 +1,69 @@
+<div class="register-container">
+  <div class="register-card">
+    <h1>Create Account</h1>
+    <p class="subtitle">Sign up to get started with your account.</p>
+
+    @if (generalError(); as error) {
+    <div class="error-message" role="alert">
+      {{ error }}
+    </div>
+    } @if (errors(); as errorList) {
+    <div class="error-message" role="alert">
+      @for (error of errorList; track error.path) {
+      <p>{{ error.message }}</p>
+      }
+    </div>
+    }
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="onSubmit()"
+      class="register-form"
+    >
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Enter your full name"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+        />
+      </div>
+
+      <button type="submit" class="submit-button" [disabled]="isLoading()">
+        @if (isLoading()) {
+        <span>Creating account...</span>
+        } @else {
+        <span>Sign Up</span>
+        }
+      </button>
+    </form>
+
+    <div class="footer-links">
+      <p>
+        Already have an account?
+        <a routerLink="/login" class="link">Sign in</a>
+      </p>
+    </div>
+  </div>
+</div>

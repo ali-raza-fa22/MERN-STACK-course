@@ -1,3 +1,17 @@
+# Frontend
+
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.19.
+
+## Development server
+
+To start a local development server, run:
+
+```bash
+ng serve
+```
+
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+
 # API Documentation
 
 RESTful API built with Express.js, TypeScript, and MongoDB (Mongoose).
@@ -105,47 +119,6 @@ Authenticate and receive access token.
 
 - `400` - Validation failed
 - `401` - Invalid credentials
-- `500` - Server error
-
----
-
-### Get Current User Profile
-
-**GET** `/auth/me`
-
-Get the profile of the currently authenticated user, including their blogs.
-
-**Authentication:** Required (Bearer token)
-
-**Response:** `200 OK`
-
-```json
-{
-  "user": {
-    "_id": "507f1f77bcf86cd799439011",
-    "name": "John Doe",
-    "email": "john@example.com",
-    "role": "user",
-    "createdAt": "2025-12-08T10:00:00.000Z",
-    "updatedAt": "2025-12-08T10:00:00.000Z"
-  },
-  "blogs": [
-    {
-      "_id": "507f1f77bcf86cd79943901a",
-      "title": "My First Blog",
-      "content": "This is the content...",
-      "author": "507f1f77bcf86cd799439011",
-      "createdAt": "2025-12-08T12:00:00.000Z",
-      "updatedAt": "2025-12-08T12:00:00.000Z"
-    }
-  ]
-}
-```
-
-**Errors:**
-
-- `401` - Not Authenticated
-- `404` - User not found
 - `500` - Server error
 
 ---

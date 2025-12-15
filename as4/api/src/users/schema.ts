@@ -29,12 +29,12 @@ const userIdSchema = z.object({
 const createUserBodySchema = z.object({
   name: z.string().trim().min(1, "Name is required"),
   email: z.string().email(),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
 const loginBodySchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6),
+  password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
 const updateUserBodySchema = z

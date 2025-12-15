@@ -1,0 +1,18 @@
+<header class="app-header">
+  <div class="container">
+    <a routerLink="/" class="app-title-link">
+      <h1 class="app-title">My Blog App</h1>
+    </a>
+    @if (authService.isAuthenticated()) {
+    <div class="user-actions">
+      <a routerLink="/profile" class="profile-link">My Profile</a>
+      <span class="user-name">{{ authService.currentUser()?.name }}</span>
+      <button class="logout-button" (click)="onLogout()">Logout</button>
+    </div>
+    }
+  </div>
+</header>
+
+<main>
+  <router-outlet />
+</main>

@@ -1,0 +1,33 @@
+.blog-detail-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  padding: 30px;
+  max-width: 800px;
+}
+
+.blog-title {
+  font-size: 2.5rem;
+  margin: 0 0 20px;
+}
+
+.blog-meta {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.author-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.author-link:hover {
+  text-decoration: underline;
+}
+
+.blog-content {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}

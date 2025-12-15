@@ -3,6 +3,8 @@ import { Router, Request, Response } from "express";
 import { Role, signAccessToken } from "../lib/auth.js";
 import { UserModel, UserDocument } from "../users/model.js";
 import { validateCreateUser, validateLogin } from "../users/schema.js";
+import { requireAuth, requireUser } from "../users/middleware.js";
+import { BlogModel } from "../blogs/model.js";
 
 const router = Router();
 
@@ -91,6 +93,26 @@ router.post(
       res.json({ user: sanitizeUser(user), token });
     } catch (err) {
       res.status(500).json({ message: "Failed to login", error: err });
+    }
+  },
+);
+
+router.get(
+  "/me",
+  requireAuth,
+  requireUser,
+  async (req: Request, res: Response) => {
+    try {
+      const user = await UserModel.findById((req as any).user.sub)
+        .select("-password")
+        .lean();
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      const blogs = await BlogModel.find({ author: user._id }).lean();
+      res.json({ user, blogs });
+    } catch (err) {
+      res.status(500).json({ message: "Failed to fetch profile", error: err });
     }
   },
 );
